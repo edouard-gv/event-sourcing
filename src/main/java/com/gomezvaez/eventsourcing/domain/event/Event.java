@@ -10,9 +10,9 @@ import com.gomezvaez.eventsourcing.domain.Alchemist;
         property = "type"
 )
 @JsonSubTypes({
-        @JsonSubTypes.Type(value = ActivityRealizedEvent.class, name = "activityRealized"),
-        @JsonSubTypes.Type(value = PearlsSpentEvent.class, name = "pearlsSpent"),
-        @JsonSubTypes.Type(value = AlchemistCreatedEvent.class, name = "alchemistCreated")
+        @JsonSubTypes.Type(value = ActivityRegistered.class, name = "activityRegistered"),
+        @JsonSubTypes.Type(value = ExpenseRegistered.class, name = "expenseRegistered"),
+        @JsonSubTypes.Type(value = AlchemistCreated.class, name = "alchemistCreated")
 })
 
 public interface Event {

@@ -2,5 +2,5 @@ package com.gomezvaez.eventsourcing.domain;
 
 import java.util.Date;
 
-public record Activity(String description, Date date, int credit) {
+public record Expense(String description, Date date, int debit) {
 }

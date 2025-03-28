@@ -1,14 +1,12 @@
 package com.gomezvaez.eventsourcing.api;
 
 import com.gomezvaez.eventsourcing.domain.Alchemist;
-import com.gomezvaez.eventsourcing.domain.event.ActivityRealizedEvent;
-import com.gomezvaez.eventsourcing.domain.event.AlchemistCreatedEvent;
-import com.gomezvaez.eventsourcing.domain.event.PearlsSpentEvent;
+import com.gomezvaez.eventsourcing.domain.event.ActivityRegistered;
+import com.gomezvaez.eventsourcing.domain.event.ExpenseRegistered;
 import com.gomezvaez.eventsourcing.eventstore.AlchemistESRepository;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.UUID;
 
 @RestController
 @RequestMapping("/alchemists")
@@ -20,24 +18,21 @@ public class AlchemistController {
         this.alchemistRepository = alchemistRepository;
     }
 
+    @PostMapping("/{alchemistId}/expenses")
+    public void registerExpense(@PathVariable String alchemistId, @RequestBody RegisterExpenseRequest registerExpenseRequest) {
+        ExpenseRegistered expenseRegistered = new ExpenseRegistered(alchemistId, registerExpenseRequest.date(), registerExpenseRequest.description(), registerExpenseRequest.debit());
+        alchemistRepository.registerEvent(expenseRegistered);
+    }
+
+    @PostMapping("/{alchemistId}/activities")
+    public void registerActivity(@PathVariable String alchemistId, @RequestBody RegisterActivityRequest registerActivityRequest) {
+        ActivityRegistered activityRegistered = new ActivityRegistered(alchemistId, registerActivityRequest.date(), registerActivityRequest.description(), registerActivityRequest.credit());
+        alchemistRepository.registerEvent(activityRegistered);
+    }
+
     @PostMapping
-    public String createAlchemist(@RequestBody CreateAlchemistRequest createAlchemistRequest) {
-        String alchemistId = UUID.randomUUID().toString();
-        AlchemistCreatedEvent alchemistCreatedEvent = new AlchemistCreatedEvent(alchemistId, createAlchemistRequest.name(), createAlchemistRequest.email());
-        alchemistRepository.registerEvent(alchemistCreatedEvent);
-        return alchemistId;
-    }
-
-    @PostMapping("/{alchemistId}/spend-pearls")
-    public void spendPearls(@PathVariable String alchemistId, @RequestBody SpendPearlsRequest spendPearlsRequest) {
-        PearlsSpentEvent pearlsSpentEvent = new PearlsSpentEvent(alchemistId, spendPearlsRequest.date(), spendPearlsRequest.description(), spendPearlsRequest.pearlsSpent());
-        alchemistRepository.registerEvent(pearlsSpentEvent);
-    }
-
-    @PostMapping("/{alchemistId}/realize-activity")
-    public void realizeActivity(@PathVariable String alchemistId, @RequestBody RealizeActivityRequest realizeActivityRequest) {
-        ActivityRealizedEvent activityRealizedEvent = new ActivityRealizedEvent(alchemistId, realizeActivityRequest.date(), realizeActivityRequest.description(), realizeActivityRequest.pearlsGained());
-        alchemistRepository.registerEvent(activityRealizedEvent);
+    public String newAlchemist(@RequestBody CreateAlchemistRequest createAlchemistRequest) {
+        return alchemistRepository.createAlchemist(createAlchemistRequest);
     }
 
     @GetMapping

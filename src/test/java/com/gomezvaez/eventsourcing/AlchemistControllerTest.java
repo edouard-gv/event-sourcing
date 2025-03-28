@@ -2,8 +2,8 @@ package com.gomezvaez.eventsourcing;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gomezvaez.eventsourcing.api.CreateAlchemistRequest;
-import com.gomezvaez.eventsourcing.api.RealizeActivityRequest;
-import com.gomezvaez.eventsourcing.api.SpendPearlsRequest;
+import com.gomezvaez.eventsourcing.api.RegisterActivityRequest;
+import com.gomezvaez.eventsourcing.api.RegisterExpenseRequest;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -35,17 +35,17 @@ public class AlchemistControllerTest {
         String alchemistId = mockMvc.perform(post("/alchemists").contentType("application/json").content(objectMapper.writeValueAsString(createAlchemistRequest))).andExpect(status().isOk()).andReturn().getResponse().getContentAsString();
 
         // Ajouter une activité +30
-        RealizeActivityRequest realizeActivityRequest = new RealizeActivityRequest(new Date(), "Test Activity", 30);
-        mockMvc.perform(post("/alchemists/" + alchemistId + "/realize-activity").contentType("application/json").content(objectMapper.writeValueAsString(realizeActivityRequest))).andExpect(status().isOk());
+        RegisterActivityRequest registerActivityRequest = new RegisterActivityRequest(new Date(), "Test Activity", 30);
+        mockMvc.perform(post("/alchemists/" + alchemistId + "/activities").contentType("application/json").content(objectMapper.writeValueAsString(registerActivityRequest))).andExpect(status().isOk());
 
         // Ajouter un spending -20
-        SpendPearlsRequest spendPearlsRequest = new SpendPearlsRequest(new Date(), "Test Spend Pearls", 20);
-        mockMvc.perform(post("/alchemists/" + alchemistId + "/spend-pearls").contentType("application/json").content(objectMapper.writeValueAsString(spendPearlsRequest))).andExpect(status().isOk());
+        RegisterExpenseRequest registerExpenseRequest = new RegisterExpenseRequest(new Date(), "Test Spend Pearls", 20);
+        mockMvc.perform(post("/alchemists/" + alchemistId + "/expenses").contentType("application/json").content(objectMapper.writeValueAsString(registerExpenseRequest))).andExpect(status().isOk());
 
         ResultActions alchemistResult = mockMvc.perform(get("/alchemists/" + alchemistId)).andExpect(status().isOk());
 //        System.out.println(objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(objectMapper.readValue(alchemistResult
 //                .andReturn().getResponse().getContentAsString(), Object.class)));
-        alchemistResult.andExpect(jsonPath("$.pearls").value(10));
+        alchemistResult.andExpect(jsonPath("$.balance").value(10));
 
         // Récupérer tous les Alchimistes
         mockMvc.perform(post("/alchemists").contentType("application/json").content(objectMapper.writeValueAsString(createAlchemistRequest))).andExpect(status().isOk()).andReturn().getResponse().getContentAsString();

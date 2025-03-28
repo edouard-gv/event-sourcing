@@ -1,6 +1,8 @@
 package com.gomezvaez.eventsourcing.eventstore;
 
+import com.gomezvaez.eventsourcing.api.CreateAlchemistRequest;
 import com.gomezvaez.eventsourcing.domain.Alchemist;
+import com.gomezvaez.eventsourcing.domain.event.AlchemistCreated;
 import com.gomezvaez.eventsourcing.domain.event.Event;
 import org.springframework.stereotype.Repository;
 
@@ -43,5 +45,12 @@ public class AlchemistESRepository {
         Alchemist alchemist = new Alchemist();
         events.forEach(eventEntity -> eventEntity.getEvent().applyTo(alchemist));
         return alchemist;
+    }
+
+    public String createAlchemist(CreateAlchemistRequest createAlchemistRequest) {
+        String alchemistId = UUID.randomUUID().toString();
+        AlchemistCreated alchemistCreated = new AlchemistCreated(alchemistId, createAlchemistRequest.name(), createAlchemistRequest.email());
+        registerEvent(alchemistCreated);
+        return alchemistId;
     }
 }

@@ -16,8 +16,6 @@ public class EventEntity {
     @Convert(converter = EventConverter.class)
     private Event event;
 
-    // Constructors, Getters and Setters
-
     public Long getId() {
         return id;
     }
