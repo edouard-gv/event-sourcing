@@ -1,10 +1,8 @@
 package com.gomezvaez.eventsourcing.eventstore;
 
-import com.gomezvaez.eventsourcing.domain.Alchemist;
-
-
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.gomezvaez.eventsourcing.domain.Alchemist;
 import com.gomezvaez.eventsourcing.domain.event.ActivityRealizedEvent;
 import com.gomezvaez.eventsourcing.domain.event.AlchemistCreatedEvent;
 import com.gomezvaez.eventsourcing.domain.event.PearlsSpentEvent;
@@ -21,5 +19,6 @@ import com.gomezvaez.eventsourcing.domain.event.PearlsSpentEvent;
 })
 
 public interface Event {
+    String alchemistId();
     void applyTo(Alchemist alchemist);
 }
