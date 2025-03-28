@@ -1,6 +1,7 @@
 package com.gomezvaez.eventsourcing.api;
 
 import com.gomezvaez.eventsourcing.domain.Alchemist;
+import com.gomezvaez.eventsourcing.domain.AlchemistId;
 import com.gomezvaez.eventsourcing.domain.event.ActivityRegistered;
 import com.gomezvaez.eventsourcing.domain.event.ExpenseRegistered;
 import com.gomezvaez.eventsourcing.eventstore.AlchemistESRepository;
@@ -20,19 +21,19 @@ public class AlchemistController {
 
     @PostMapping("/{alchemistId}/expenses")
     public void registerExpense(@PathVariable String alchemistId, @RequestBody RegisterExpenseRequest registerExpenseRequest) {
-        ExpenseRegistered expenseRegistered = new ExpenseRegistered(alchemistId, registerExpenseRequest.date(), registerExpenseRequest.description(), registerExpenseRequest.debit());
+        ExpenseRegistered expenseRegistered = new ExpenseRegistered(new AlchemistId(alchemistId), registerExpenseRequest.date(), registerExpenseRequest.description(), registerExpenseRequest.debit());
         alchemistRepository.registerEvent(expenseRegistered);
     }
 
     @PostMapping("/{alchemistId}/activities")
     public void registerActivity(@PathVariable String alchemistId, @RequestBody RegisterActivityRequest registerActivityRequest) {
-        ActivityRegistered activityRegistered = new ActivityRegistered(alchemistId, registerActivityRequest.date(), registerActivityRequest.description(), registerActivityRequest.credit());
+        ActivityRegistered activityRegistered = new ActivityRegistered(new AlchemistId(alchemistId), registerActivityRequest.date(), registerActivityRequest.description(), registerActivityRequest.credit());
         alchemistRepository.registerEvent(activityRegistered);
     }
 
     @PostMapping
     public String newAlchemist(@RequestBody CreateAlchemistRequest createAlchemistRequest) {
-        return alchemistRepository.createAlchemist(createAlchemistRequest);
+        return alchemistRepository.createAlchemist(createAlchemistRequest).internalId();
     }
 
     @GetMapping
@@ -40,9 +41,9 @@ public class AlchemistController {
         return alchemistRepository.getAlchemistList();
     }
 
-    @GetMapping("/{id}")
-    public Alchemist alchemistDetails(@PathVariable String id) {
-        return alchemistRepository.getAlchemist(id);
+    @GetMapping("/{alchemistId}")
+    public Alchemist alchemistDetails(@PathVariable String alchemistId) {
+        return alchemistRepository.getAlchemist(new AlchemistId(alchemistId));
     }
 
 }

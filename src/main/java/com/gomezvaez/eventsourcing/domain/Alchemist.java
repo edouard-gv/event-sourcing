@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Alchemist {
-    private String id;
+    private AlchemistId id;
     private String name;
     private String email;
     private int balance;
@@ -26,11 +26,11 @@ public class Alchemist {
         expenses = new ArrayList<>();
     }
 
-    public String getId() {
+    public AlchemistId getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(AlchemistId id) {
         this.id = id;
     }
 

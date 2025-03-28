@@ -1,11 +1,12 @@
 package com.gomezvaez.eventsourcing.domain.event;
 
 import com.gomezvaez.eventsourcing.domain.Alchemist;
+import com.gomezvaez.eventsourcing.domain.AlchemistId;
 import com.gomezvaez.eventsourcing.domain.Expense;
 
 import java.util.Date;
 
-public record ExpenseRegistered(String alchemistId, Date date, String description, int debit) implements Event {
+public record ExpenseRegistered(AlchemistId alchemistId, Date date, String description, int debit) implements Event {
 
     @Override
     public void applyTo(Alchemist alchemist) {

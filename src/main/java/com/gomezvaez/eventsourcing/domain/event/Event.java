@@ -3,6 +3,7 @@ package com.gomezvaez.eventsourcing.domain.event;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.gomezvaez.eventsourcing.domain.Alchemist;
+import com.gomezvaez.eventsourcing.domain.AlchemistId;
 
 @JsonTypeInfo(
         use = JsonTypeInfo.Id.NAME,
@@ -16,6 +17,6 @@ import com.gomezvaez.eventsourcing.domain.Alchemist;
 })
 
 public interface Event {
-    String alchemistId();
+    AlchemistId alchemistId();
     void applyTo(Alchemist alchemist);
 }

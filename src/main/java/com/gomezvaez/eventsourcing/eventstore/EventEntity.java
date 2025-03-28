@@ -1,5 +1,6 @@
 package com.gomezvaez.eventsourcing.eventstore;
 
+import com.gomezvaez.eventsourcing.domain.AlchemistId;
 import com.gomezvaez.eventsourcing.domain.event.Event;
 import jakarta.persistence.*;
 
@@ -11,7 +12,8 @@ public class EventEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private Date date;
-    private String alchemistId;
+    @Embedded
+    private AlchemistId alchemistId;
 
     @Convert(converter = EventConverter.class)
     private Event event;
@@ -28,11 +30,11 @@ public class EventEntity {
         this.date = date;
     }
 
-    public String getAlchemistId() {
+    public AlchemistId getAlchemistId() {
         return alchemistId;
     }
 
-    public void setAlchemistId(String alchemistId) {
+    public void setAlchemistId(AlchemistId alchemistId) {
         this.alchemistId = alchemistId;
     }
 
