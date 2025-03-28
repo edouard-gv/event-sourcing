@@ -1,6 +1,5 @@
 package com.gomezvaez.eventsourcing.api;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.gomezvaez.eventsourcing.domain.Alchemist;
 import com.gomezvaez.eventsourcing.domain.event.ActivityRealizedEvent;
 import com.gomezvaez.eventsourcing.domain.event.AlchemistCreatedEvent;
@@ -61,7 +60,7 @@ public class AlchemistController {
     }
 
     @GetMapping
-    public List<Alchemist> listAlchemists() {
+    public List<Alchemist> alchemistList() {
         List<EventEntity> events = eventRepository.findAllByOrderByIdAsc();
         Map<String, Alchemist> alchemists = new HashMap<>();
         events.forEach(eventEntity -> {
@@ -76,7 +75,7 @@ public class AlchemistController {
     }
 
     @GetMapping("/{id}")
-    public Alchemist detailAlchemist(@PathVariable String id) {
+    public Alchemist alchemistDetails(@PathVariable String id) {
         List<EventEntity> events = eventRepository.findByAlchemistIdOrderByIdAsc(id);
         Alchemist alchemist = new Alchemist();
         events.stream().map(EventEntity::getEvent).forEach(event -> event.applyTo(alchemist));
