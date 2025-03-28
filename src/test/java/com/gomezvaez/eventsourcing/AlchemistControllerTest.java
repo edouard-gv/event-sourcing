@@ -30,7 +30,7 @@ public class AlchemistControllerTest {
 
     @Test
     public void testCreateAlchemistAndAddActivityAndSpending() throws Exception {
-        // Créer un alchemiste
+        // Créer un alchimiste
         CreateAlchemistRequest createAlchemistRequest = new CreateAlchemistRequest("Test Alchemist", "test@example.com");
         String alchemistId = mockMvc.perform(post("/alchemists").contentType("application/json").content(objectMapper.writeValueAsString(createAlchemistRequest))).andExpect(status().isOk()).andReturn().getResponse().getContentAsString();
 

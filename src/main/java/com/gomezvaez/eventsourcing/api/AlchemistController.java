@@ -32,7 +32,7 @@ public class AlchemistController {
     }
 
     @PostMapping
-    public String newAlchemist(@RequestBody CreateAlchemistRequest createAlchemistRequest) {
+    public String createAlchemist(@RequestBody CreateAlchemistRequest createAlchemistRequest) {
         return alchemistRepository.createAlchemist(createAlchemistRequest).internalId();
     }
 
