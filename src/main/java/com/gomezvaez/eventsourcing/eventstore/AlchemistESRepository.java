@@ -3,8 +3,7 @@ package com.gomezvaez.eventsourcing.eventstore;
 import com.gomezvaez.eventsourcing.api.CreateAlchemistRequest;
 import com.gomezvaez.eventsourcing.domain.Alchemist;
 import com.gomezvaez.eventsourcing.domain.AlchemistId;
-import com.gomezvaez.eventsourcing.domain.event.AlchemistCreated;
-import com.gomezvaez.eventsourcing.domain.event.Event;
+import com.gomezvaez.eventsourcing.domain.event.*;
 import org.springframework.stereotype.Repository;
 
 import java.util.*;
@@ -16,6 +15,14 @@ public class AlchemistESRepository {
 
     public AlchemistESRepository(EventRepository eventRepository) {
         this.eventRepository = eventRepository;
+    }
+
+    public void registerExpense(ExpenseRegistered event) {
+        registerEvent(event.solidify(new EventId(UUID.randomUUID().toString())));
+    }
+
+    public void registerActivity(ActivityRegistered event) {
+        registerEvent(event.solidify(new EventId(UUID.randomUUID().toString())));
     }
 
     public void registerEvent(Event event) {
