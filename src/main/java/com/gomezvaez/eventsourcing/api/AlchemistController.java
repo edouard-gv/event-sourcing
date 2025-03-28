@@ -78,7 +78,7 @@ public class AlchemistController {
     public Alchemist alchemistDetails(@PathVariable String id) {
         List<EventEntity> events = eventRepository.findByAlchemistIdOrderByIdAsc(id);
         Alchemist alchemist = new Alchemist();
-        events.stream().map(EventEntity::getEvent).forEach(event -> event.applyTo(alchemist));
+        events.forEach(eventEntity -> eventEntity.getEvent().applyTo(alchemist));
         return alchemist;
     }
 }
