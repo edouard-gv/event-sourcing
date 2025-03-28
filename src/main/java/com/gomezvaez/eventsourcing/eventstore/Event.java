@@ -21,5 +21,5 @@ import com.gomezvaez.eventsourcing.domain.event.PearlsSpentEvent;
 })
 
 public interface Event {
-    public void applyTo(Alchemist alchemist);
+    void applyTo(Alchemist alchemist);
 }

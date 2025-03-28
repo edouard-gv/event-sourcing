@@ -8,8 +8,8 @@ public class Alchemist {
     private String name;
     private String email;
     private int pearls;
-    private List<Activity> activities;
-    private List<PearlExpense> pearlExpens;
+    private final List<Activity> activities;
+    private final List<PearlExpense> pearlExpenses;
 
     // Getters and Setters
 
@@ -18,12 +18,12 @@ public class Alchemist {
     }
 
     public List<PearlExpense> getPearlsSpendings() {
-        return pearlExpens;
+        return pearlExpenses;
     }
 
     public Alchemist() {
         activities = new ArrayList<>();
-        pearlExpens = new ArrayList<>();
+        pearlExpenses = new ArrayList<>();
     }
 
     public String getId() {

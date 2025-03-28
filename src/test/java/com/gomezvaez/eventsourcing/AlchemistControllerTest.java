@@ -4,8 +4,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gomezvaez.eventsourcing.api.CreateAlchemistRequest;
 import com.gomezvaez.eventsourcing.api.RealizeActivityRequest;
 import com.gomezvaez.eventsourcing.api.SpendPearlsRequest;
-import com.gomezvaez.eventsourcing.domain.event.AlchemistCreatedEvent;
-import com.gomezvaez.eventsourcing.domain.event.PearlsSpentEvent;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;

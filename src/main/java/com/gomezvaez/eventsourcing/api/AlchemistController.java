@@ -23,29 +23,22 @@ public class AlchemistController {
     }
 
     @PostMapping
-    public String createAlchemist(@RequestBody CreateAlchemistRequest createAlchemistRequest) throws JsonProcessingException {
-        AlchemistCreatedEvent alchemistCreatedEvent = new AlchemistCreatedEvent();
-        alchemistCreatedEvent.setAlchemistId(UUID.randomUUID().toString());
-        alchemistCreatedEvent.setName(createAlchemistRequest.name());
-        alchemistCreatedEvent.setEmail(createAlchemistRequest.email());
+    public String createAlchemist(@RequestBody CreateAlchemistRequest createAlchemistRequest)  {
+        AlchemistCreatedEvent alchemistCreatedEvent = new AlchemistCreatedEvent(UUID.randomUUID().toString(), createAlchemistRequest.name(), createAlchemistRequest.email());
 
         EventEntity event = new EventEntity();
         event.setDate(new Date());
-        event.setAlchemistId(alchemistCreatedEvent.getAlchemistId());
+        event.setAlchemistId(alchemistCreatedEvent.alchemistId());
         event.setEvent(alchemistCreatedEvent);
 
         eventRepository.save(event);
 
-        return alchemistCreatedEvent.getAlchemistId();
+        return alchemistCreatedEvent.alchemistId();
     }
 
     @PostMapping("/{alchemistId}/spend-pearls")
-    public void spendPearls(@PathVariable String alchemistId, @RequestBody SpendPearlsRequest spendPearlsRequest) throws JsonProcessingException {
-        PearlsSpentEvent pearlsSpentEvent = new PearlsSpentEvent();
-        pearlsSpentEvent.setAlchemistId(alchemistId);
-        pearlsSpentEvent.setDate(spendPearlsRequest.date());
-        pearlsSpentEvent.setDescription(spendPearlsRequest.description());
-        pearlsSpentEvent.setPearlsSpent(spendPearlsRequest.pearlsSpent());
+    public void spendPearls(@PathVariable String alchemistId, @RequestBody SpendPearlsRequest spendPearlsRequest) {
+        PearlsSpentEvent pearlsSpentEvent = new PearlsSpentEvent(alchemistId, spendPearlsRequest.date(), spendPearlsRequest.description(), spendPearlsRequest.pearlsSpent());
 
         EventEntity event = new EventEntity();
         event.setDate(new Date());
@@ -56,12 +49,8 @@ public class AlchemistController {
     }
 
     @PostMapping("/{alchemistId}/realize-activity")
-    public void realizeActivity(@PathVariable String alchemistId, @RequestBody RealizeActivityRequest realizeActivityRequest) throws JsonProcessingException {
-        ActivityRealizedEvent activityRealizedEvent = new ActivityRealizedEvent();
-        activityRealizedEvent.setAlchemistId(alchemistId);
-        activityRealizedEvent.setDate(realizeActivityRequest.date());
-        activityRealizedEvent.setDescription(realizeActivityRequest.description());
-        activityRealizedEvent.setPearlsGained(realizeActivityRequest.pearlsGained());
+    public void realizeActivity(@PathVariable String alchemistId, @RequestBody RealizeActivityRequest realizeActivityRequest) {
+        ActivityRealizedEvent activityRealizedEvent = new ActivityRealizedEvent(alchemistId, realizeActivityRequest.date(), realizeActivityRequest.description(), realizeActivityRequest.pearlsGained());
 
         EventEntity event = new EventEntity();
         event.setDate(new Date());
@@ -75,7 +64,7 @@ public class AlchemistController {
     public List<Alchemist> listAlchemists() {
         List<EventEntity> events = eventRepository.findAllByOrderByIdAsc();
         Map<String, Alchemist> alchemists = new HashMap<>();
-        events.stream().forEach(eventEntity -> {
+        events.forEach(eventEntity -> {
             String alchemistId = eventEntity.getAlchemistId();
             Event event = eventEntity.getEvent();
             if (!alchemists.containsKey(alchemistId)) {
@@ -90,7 +79,7 @@ public class AlchemistController {
     public Alchemist detailAlchemist(@PathVariable String id) {
         List<EventEntity> events = eventRepository.findByAlchemistIdOrderByIdAsc(id);
         Alchemist alchemist = new Alchemist();
-        events.stream().map(ee -> ee.getEvent()).forEach(event -> event.applyTo(alchemist));
+        events.stream().map(EventEntity::getEvent).forEach(event -> event.applyTo(alchemist));
         return alchemist;
     }
 }
