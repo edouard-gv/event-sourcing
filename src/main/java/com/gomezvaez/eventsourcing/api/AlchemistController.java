@@ -33,7 +33,9 @@ public class AlchemistController {
 
     @PostMapping
     public String createAlchemist(@RequestBody CreateAlchemistRequest createAlchemistRequest) {
-        return alchemistRepository.createAlchemist(createAlchemistRequest).internalId();
+        AlchemistId alchemistId = alchemistRepository.createAlchemist(createAlchemistRequest);
+        // Returning a AlchemistId presuming that it would be converted to String, using forJson(), fails: double quotes are added to the returned value :-/.
+        return alchemistId.forJson();
     }
 
     @GetMapping
