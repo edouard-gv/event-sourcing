@@ -5,15 +5,15 @@ import java.util.Date;
 public class Activity {
     private String description;
     private Date date;
-    private int perlsGained;
+    private int pearlsGained;
 
     // Constructeurs
     public Activity() {}
 
-    public Activity(String description, Date date, int perlsGained) {
+    public Activity(String description, Date date, int pearlsGained) {
         this.description = description;
         this.date = date;
-        this.perlsGained = perlsGained;
+        this.pearlsGained = pearlsGained;
     }
 
     // Getters et Setters
@@ -33,11 +33,11 @@ public class Activity {
         this.date = date;
     }
 
-    public int getPerlsGained() {
-        return perlsGained;
+    public int getPearlsGained() {
+        return pearlsGained;
     }
 
-    public void setPerlsGained(int perlsGained) {
-        this.perlsGained = perlsGained;
+    public void setPearlsGained(int pearlsGained) {
+        this.pearlsGained = pearlsGained;
     }
 }

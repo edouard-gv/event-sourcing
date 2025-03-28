@@ -4,7 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.gomezvaez.eventsourcing.domain.Alchemist;
 import com.gomezvaez.eventsourcing.domain.event.ActivityRealizedEvent;
 import com.gomezvaez.eventsourcing.domain.event.AlchemistCreatedEvent;
-import com.gomezvaez.eventsourcing.domain.event.PerlsSpentEvent;
+import com.gomezvaez.eventsourcing.domain.event.PearlsSpentEvent;
 import com.gomezvaez.eventsourcing.eventstore.Event;
 import com.gomezvaez.eventsourcing.eventstore.EventEntity;
 import com.gomezvaez.eventsourcing.eventstore.EventRepository;
@@ -39,18 +39,18 @@ public class AlchemistController {
         return alchemistCreatedEvent.getAlchemistId();
     }
 
-    @PostMapping("/{alchemistId}/spend-perls")
-    public void spendPerls(@PathVariable String alchemistId, @RequestBody SpendPearlsRequest spendPearlsRequest) throws JsonProcessingException {
-        PerlsSpentEvent perlsSpentEvent = new PerlsSpentEvent();
-        perlsSpentEvent.setAlchemistId(alchemistId);
-        perlsSpentEvent.setDate(spendPearlsRequest.date());
-        perlsSpentEvent.setDescription(spendPearlsRequest.description());
-        perlsSpentEvent.setPerlsSpent(spendPearlsRequest.perlsSpent());
+    @PostMapping("/{alchemistId}/spend-pearls")
+    public void spendPearls(@PathVariable String alchemistId, @RequestBody SpendPearlsRequest spendPearlsRequest) throws JsonProcessingException {
+        PearlsSpentEvent pearlsSpentEvent = new PearlsSpentEvent();
+        pearlsSpentEvent.setAlchemistId(alchemistId);
+        pearlsSpentEvent.setDate(spendPearlsRequest.date());
+        pearlsSpentEvent.setDescription(spendPearlsRequest.description());
+        pearlsSpentEvent.setPearlsSpent(spendPearlsRequest.pearlsSpent());
 
         EventEntity event = new EventEntity();
         event.setDate(new Date());
         event.setAlchemistId(alchemistId);
-        event.setEvent(perlsSpentEvent);
+        event.setEvent(pearlsSpentEvent);
 
         eventRepository.save(event);
     }
@@ -61,7 +61,7 @@ public class AlchemistController {
         activityRealizedEvent.setAlchemistId(alchemistId);
         activityRealizedEvent.setDate(realizeActivityRequest.date());
         activityRealizedEvent.setDescription(realizeActivityRequest.description());
-        activityRealizedEvent.setPerlsGained(realizeActivityRequest.perlsGained());
+        activityRealizedEvent.setPearlsGained(realizeActivityRequest.pearlsGained());
 
         EventEntity event = new EventEntity();
         event.setDate(new Date());

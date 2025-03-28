@@ -10,7 +10,7 @@ public class ActivityRealizedEvent implements Event {
     private String alchemistId;
     private String description;
     private Date date;
-    private int perlsGained;
+    private int pearlsGained;
 
     public String getAlchemistId() {
         return alchemistId;
@@ -36,17 +36,17 @@ public class ActivityRealizedEvent implements Event {
         this.date = date;
     }
 
-    public int getPerlsGained() {
-        return perlsGained;
+    public int getPearlsGained() {
+        return pearlsGained;
     }
 
-    public void setPerlsGained(int perlsGained) {
-        this.perlsGained = perlsGained;
+    public void setPearlsGained(int pearlsGained) {
+        this.pearlsGained = pearlsGained;
     }
 
     @Override
     public void applyTo(Alchemist alchemist) {
-        alchemist.getActivities().add(new Activity(description, date, perlsGained));
-        alchemist.setPerls(alchemist.getPerls() + perlsGained);
+        alchemist.getActivities().add(new Activity(description, date, pearlsGained));
+        alchemist.setPearls(alchemist.getPearls() + pearlsGained);
     }
 }

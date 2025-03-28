@@ -1,16 +1,16 @@
 package com.gomezvaez.eventsourcing.domain.event;
 
 import com.gomezvaez.eventsourcing.domain.Alchemist;
-import com.gomezvaez.eventsourcing.domain.PerlExpense;
+import com.gomezvaez.eventsourcing.domain.PearlExpense;
 import com.gomezvaez.eventsourcing.eventstore.Event;
 
 import java.util.Date;
 
-public class PerlsSpentEvent implements Event {
+public class PearlsSpentEvent implements Event {
     private String alchemistId;
     private String description;
     private Date date;
-    private int perlsSpent;
+    private int pearlsSpent;
 
     public String getAlchemistId() {
         return alchemistId;
@@ -36,17 +36,17 @@ public class PerlsSpentEvent implements Event {
         this.date = date;
     }
 
-    public int getPerlsSpent() {
-        return perlsSpent;
+    public int getPearlsSpent() {
+        return pearlsSpent;
     }
 
-    public void setPerlsSpent(int perlsSpent) {
-        this.perlsSpent = perlsSpent;
+    public void setPearlsSpent(int pearlsSpent) {
+        this.pearlsSpent = pearlsSpent;
     }
 
     @Override
     public void applyTo(Alchemist alchemist) {
-        alchemist.getPerlsSpendings().add(new PerlExpense(description, date, perlsSpent));
-        alchemist.setPerls(alchemist.getPerls() - perlsSpent);
+        alchemist.getPearlsSpendings().add(new PearlExpense(description, date, pearlsSpent));
+        alchemist.setPearls(alchemist.getPearls() - pearlsSpent);
     }
 }

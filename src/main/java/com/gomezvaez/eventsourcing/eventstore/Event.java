@@ -7,7 +7,7 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.gomezvaez.eventsourcing.domain.event.ActivityRealizedEvent;
 import com.gomezvaez.eventsourcing.domain.event.AlchemistCreatedEvent;
-import com.gomezvaez.eventsourcing.domain.event.PerlsSpentEvent;
+import com.gomezvaez.eventsourcing.domain.event.PearlsSpentEvent;
 
 @JsonTypeInfo(
         use = JsonTypeInfo.Id.NAME,
@@ -16,7 +16,7 @@ import com.gomezvaez.eventsourcing.domain.event.PerlsSpentEvent;
 )
 @JsonSubTypes({
         @JsonSubTypes.Type(value = ActivityRealizedEvent.class, name = "activityRealized"),
-        @JsonSubTypes.Type(value = PerlsSpentEvent.class, name = "perlsSpent"),
+        @JsonSubTypes.Type(value = PearlsSpentEvent.class, name = "pearlsSpent"),
         @JsonSubTypes.Type(value = AlchemistCreatedEvent.class, name = "alchemistCreated")
 })
 
