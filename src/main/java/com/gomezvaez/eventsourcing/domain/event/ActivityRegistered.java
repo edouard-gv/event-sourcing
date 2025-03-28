@@ -10,7 +10,7 @@ public record ActivityRegistered(AlchemistId alchemistId, Date date, String desc
 
     @Override
     public void applyTo(Alchemist alchemist) {
-        alchemist.activities().add(new Activity(description, date, credit));
+        alchemist.getActivities().add(new Activity(description, date, credit));
         alchemist.setBalance(alchemist.getBalance() + credit);
     }
 }

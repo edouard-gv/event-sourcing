@@ -13,11 +13,11 @@ public class Alchemist {
 
     // Getters and Setters
 
-    public List<Activity> activities() {
+    public List<Activity> getActivities() {
         return activities;
     }
 
-    public List<Expense> expenses() {
+    public List<Expense> getExpenses() {
         return expenses;
     }
 

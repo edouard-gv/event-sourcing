@@ -43,8 +43,8 @@ public class AlchemistControllerTest {
         mockMvc.perform(post("/alchemists/" + alchemistId + "/expenses").contentType("application/json").content(objectMapper.writeValueAsString(registerExpenseRequest))).andExpect(status().isOk());
 
         ResultActions alchemistResult = mockMvc.perform(get("/alchemists/" + alchemistId)).andExpect(status().isOk());
-//        System.out.println(objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(objectMapper.readValue(alchemistResult
-//                .andReturn().getResponse().getContentAsString(), Object.class)));
+        System.out.println(objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(objectMapper.readValue(alchemistResult
+                .andReturn().getResponse().getContentAsString(), Object.class)));
         alchemistResult.andExpect(jsonPath("$.balance").value(10));
 
         // Récupérer tous les Alchimistes

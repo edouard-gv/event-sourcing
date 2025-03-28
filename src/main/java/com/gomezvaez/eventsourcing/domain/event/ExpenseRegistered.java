@@ -10,7 +10,7 @@ public record ExpenseRegistered(AlchemistId alchemistId, Date date, String descr
 
     @Override
     public void applyTo(Alchemist alchemist) {
-        alchemist.expenses().add(new Expense(description, date, debit));
+        alchemist.getExpenses().add(new Expense(description, date, debit));
         alchemist.setBalance(alchemist.getBalance() - debit);
     }
 }
