@@ -1,5 +1,6 @@
 package com.gomezvaez.eventsourcing.eventstore;
 
+import com.gomezvaez.eventsourcing.domain.event.Event;
 import jakarta.persistence.*;
 
 import java.util.Date;

@@ -2,7 +2,6 @@ package com.gomezvaez.eventsourcing.domain.event;
 
 import com.gomezvaez.eventsourcing.domain.Alchemist;
 import com.gomezvaez.eventsourcing.domain.PearlExpense;
-import com.gomezvaez.eventsourcing.eventstore.Event;
 
 import java.util.Date;
 

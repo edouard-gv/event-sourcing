@@ -1,6 +1,7 @@
 package com.gomezvaez.eventsourcing.eventstore;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.gomezvaez.eventsourcing.domain.event.Event;
 import jakarta.persistence.AttributeConverter;
 import jakarta.persistence.Converter;
 

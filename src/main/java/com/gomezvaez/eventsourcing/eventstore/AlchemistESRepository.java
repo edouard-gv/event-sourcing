@@ -1,6 +1,7 @@
 package com.gomezvaez.eventsourcing.eventstore;
 
 import com.gomezvaez.eventsourcing.domain.Alchemist;
+import com.gomezvaez.eventsourcing.domain.event.Event;
 import org.springframework.stereotype.Repository;
 
 import java.util.*;
