@@ -40,12 +40,32 @@ public class AlchemistControllerTest {
 
         // Ajouter une activité +30
         RegisterActivityRequest registerActivityRequest = new RegisterActivityRequest(new Date(), "Test Activity", 30);
-        mockMvc.perform(post("/alchemists/" + alchemistId + "/activities").contentType("application/json").content(objectMapper.writeValueAsString(registerActivityRequest))).andExpect(status().isOk());
+        String activityId = mockMvc.perform(post("/alchemists/" + alchemistId + "/activities").contentType("application/json").content(objectMapper.writeValueAsString(registerActivityRequest))).andExpect(status().isOk())
+                .andReturn().getResponse().getContentAsString();
 
-        // Ajouter un spending -20
+        // Le solde reste à 0, perles en cours de validatin à 30
+        mockMvc.perform(get("/alchemists/" + alchemistId)).andExpect(status().isOk())
+                .andExpect(jsonPath("$.balance").value(0))
+                .andExpect(jsonPath("$.upcoming-operations").value(30));
+
+
+        // On valide l'activité
+        mockMvc.perform(post("/alchemists/" + alchemistId + "/activities/" + activityId).contentType("application/json").content(objectMapper.writeValueAsString(registerActivityRequest))).andExpect(status().isOk());
+
+        // Le solde passe à 30, les perles en cours de validation à 0
+        mockMvc.perform(get("/alchemists/" + alchemistId)).andExpect(status().isOk())
+                // Le solde reste à 0, perles en cours de validation à 30
+                .andExpect(jsonPath("$.balance").value(30))
+                .andExpect(jsonPath("$.upcoming-operations").value(0));
+
+        // Ajouter une dépense de -20
         RegisterExpenseRequest registerExpenseRequest = new RegisterExpenseRequest(new Date(), "Test Spend Pearls", 20);
         mockMvc.perform(post("/alchemists/" + alchemistId + "/expenses").contentType("application/json").content(objectMapper.writeValueAsString(registerExpenseRequest))).andExpect(status().isOk());
 
+        // Le solde reste à 00, perles en cours de validation à -20
+        // On valide la dépense
+
+        // Le solde passe à 10, les perles en cours de validation à 0
         mockMvc.perform(get("/alchemists/" + alchemistId)).andExpect(status().isOk())
                 .andExpect(jsonPath("$.balance").value(10));
     }
@@ -89,4 +109,7 @@ public class AlchemistControllerTest {
                 .andExpect(status().isNotFound());
 
     }
+
+    //Verifier qu'on ne peut pas valider une activité qui est à un.e autre alchimiste
+    //Vérifier qu'on ne peux valider expense et activity que si on a les bons droits
 }
