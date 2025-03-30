@@ -54,4 +54,19 @@ public class AlchemistControllerTest {
                 .andExpect(jsonPath("$.length()").value(2));
 
     }
+
+    @Test
+    public void testCannotAddActivitiesNorExpensesOnUknownAlchimists() throws Exception {
+        ResultActions alchemistResult = mockMvc.perform(get("/alchemists/" + "00000-00"));
+        alchemistResult.andExpect(status().isNotFound());
+
+        RegisterActivityRequest registerActivityRequest = new RegisterActivityRequest(new Date(), "Test Activity", 30);
+        mockMvc.perform(post("/alchemists/" + "00000-00" + "/activities").contentType("application/json").content(objectMapper.writeValueAsString(registerActivityRequest)))
+                .andExpect(status().isNotFound());
+
+        RegisterExpenseRequest registerExpenseRequest = new RegisterExpenseRequest(new Date(), "Test Spend Pearls", 20);
+        mockMvc.perform(post("/alchemists/" + "00000-00" + "/expenses").contentType("application/json").content(objectMapper.writeValueAsString(registerExpenseRequest)))
+                .andExpect(status().isNotFound());
+
+    }
 }

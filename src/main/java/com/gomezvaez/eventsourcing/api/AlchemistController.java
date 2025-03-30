@@ -23,12 +23,14 @@ public class AlchemistController {
 
     @PostMapping("/{alchemistId}/expenses")
     public void registerExpense(@PathVariable String alchemistId, @RequestBody RegisterExpenseRequest registerExpenseRequest) {
+        alchemistRepository.getAlchemist(new AlchemistId(alchemistId));
         ExpenseRegistered expenseRegistered = new ExpenseRegistered(new AlchemistId(alchemistId), registerExpenseRequest.date(), registerExpenseRequest.description(), registerExpenseRequest.debit());
         alchemistRepository.registerEvent(expenseRegistered);
     }
 
     @PostMapping("/{alchemistId}/activities")
     public void registerActivity(@PathVariable String alchemistId, @RequestBody RegisterActivityRequest registerActivityRequest) {
+        alchemistRepository.getAlchemist(new AlchemistId(alchemistId));
         ActivityRegistered activityRegistered = new ActivityRegistered(new AlchemistId(alchemistId), registerActivityRequest.date(), registerActivityRequest.description(), registerActivityRequest.credit());
         alchemistRepository.registerEvent(activityRegistered);
     }
