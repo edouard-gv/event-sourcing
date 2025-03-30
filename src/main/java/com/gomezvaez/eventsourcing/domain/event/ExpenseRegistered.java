@@ -18,7 +18,7 @@ public record ExpenseRegistered(EventId eventId, AlchemistId alchemistId, Date d
         alchemist.setBalance(alchemist.getBalance() - debit);
     }
 
-    public ExpenseRegistered setId(EventId eventId) {
-        return new ExpenseRegistered(eventId, alchemistId, date, description, debit);
+    public ExpenseRegistered setId(String internalId) {
+        return new ExpenseRegistered(new EventId(internalId), alchemistId, date, description, debit);
     }
 }

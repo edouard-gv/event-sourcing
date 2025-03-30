@@ -1,6 +1,5 @@
 package com.gomezvaez.eventsourcing.eventstore;
 
-import com.gomezvaez.eventsourcing.api.CreateAlchemistRequest;
 import com.gomezvaez.eventsourcing.domain.Alchemist;
 import com.gomezvaez.eventsourcing.domain.AlchemistId;
 import com.gomezvaez.eventsourcing.domain.event.*;
@@ -17,17 +16,21 @@ public class AlchemistESRepository {
         this.eventRepository = eventRepository;
     }
 
-    public void registerEvent(Event event) {
+    public Event registerEvent(Event event) {
         EventEntity eventEntity = new EventEntity();
         eventEntity.setDate(new Date());
-        eventEntity.setAlchemistId(event.alchemistId());
-        eventEntity.setEvent(setId(event));
+        Event eventWithId = setId(event);
+        eventEntity.setAlchemistId(eventWithId.alchemistId());
+        eventEntity.setEvent(eventWithId);
 
         eventRepository.save(eventEntity);
+
+        return eventWithId;
+
     }
 
     private static Event setId(Event event) {
-        return event instanceof CreationEvent creationEvent ? creationEvent.setId(new EventId(UUID.randomUUID().toString())) : event;
+        return event instanceof CreationEvent creationEvent ? creationEvent.setId(UUID.randomUUID().toString()) : event;
     }
 
     public ArrayList<Alchemist> getAlchemistList() {
@@ -51,10 +54,4 @@ public class AlchemistESRepository {
         return alchemist;
     }
 
-    public AlchemistId createAlchemist(CreateAlchemistRequest createAlchemistRequest) {
-        AlchemistId alchemistId = new AlchemistId(UUID.randomUUID().toString());
-        AlchemistCreated alchemistCreated = new AlchemistCreated(alchemistId, createAlchemistRequest.name(), createAlchemistRequest.email());
-        registerEvent(alchemistCreated);
-        return alchemistId;
-    }
 }

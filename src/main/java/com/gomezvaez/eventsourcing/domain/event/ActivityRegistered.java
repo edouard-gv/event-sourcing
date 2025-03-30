@@ -18,7 +18,7 @@ public record ActivityRegistered(EventId eventId, AlchemistId alchemistId, Date 
         alchemist.setBalance(alchemist.getBalance() + credit);
     }
 
-    public ActivityRegistered setId(EventId eventId) {
-        return new ActivityRegistered(eventId, alchemistId, date, description, credit);
+    public ActivityRegistered setId(String internalId) {
+        return new ActivityRegistered(new EventId(internalId), alchemistId, date, description, credit);
     }
 }
