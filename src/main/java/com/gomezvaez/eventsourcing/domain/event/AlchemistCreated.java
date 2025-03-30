@@ -2,6 +2,7 @@ package com.gomezvaez.eventsourcing.domain.event;
 
 import com.gomezvaez.eventsourcing.domain.Alchemist;
 import com.gomezvaez.eventsourcing.domain.AlchemistId;
+import com.gomezvaez.eventsourcing.domain.TechnicalId;
 
 public record AlchemistCreated(AlchemistId alchemistId, String name, String email) implements CreationEvent {
 
@@ -17,7 +18,7 @@ public record AlchemistCreated(AlchemistId alchemistId, String name, String emai
     }
 
     @Override
-    public CreationEvent setId(String internalId) {
-        return new AlchemistCreated(new AlchemistId(internalId), name, email);
+    public CreationEvent setId(TechnicalId technicalId) {
+        return new AlchemistCreated(AlchemistId.fromTechnicalId(technicalId) , name, email);
     }
 }

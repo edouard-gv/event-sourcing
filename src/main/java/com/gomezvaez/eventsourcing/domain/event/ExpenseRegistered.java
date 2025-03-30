@@ -3,6 +3,7 @@ package com.gomezvaez.eventsourcing.domain.event;
 import com.gomezvaez.eventsourcing.domain.Alchemist;
 import com.gomezvaez.eventsourcing.domain.AlchemistId;
 import com.gomezvaez.eventsourcing.domain.Expense;
+import com.gomezvaez.eventsourcing.domain.TechnicalId;
 
 import java.util.Date;
 
@@ -18,7 +19,7 @@ public record ExpenseRegistered(EventId eventId, AlchemistId alchemistId, Date d
         alchemist.setBalance(alchemist.getBalance() - debit);
     }
 
-    public ExpenseRegistered setId(String internalId) {
-        return new ExpenseRegistered(new EventId(internalId), alchemistId, date, description, debit);
+    public ExpenseRegistered setId(TechnicalId technicalId) {
+        return new ExpenseRegistered(EventId.fromTechnicalId(technicalId), alchemistId, date, description, debit);
     }
 }

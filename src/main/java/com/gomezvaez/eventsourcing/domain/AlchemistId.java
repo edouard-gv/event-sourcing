@@ -8,4 +8,8 @@ public record AlchemistId(String internalId) {
     public String forJson() {
         return internalId;
     }
+
+    public static AlchemistId fromTechnicalId(TechnicalId technicalId) {
+        return new AlchemistId(technicalId.internalId());
+    }
 }

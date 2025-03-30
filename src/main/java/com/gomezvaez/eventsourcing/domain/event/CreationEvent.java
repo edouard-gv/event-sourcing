@@ -1,5 +1,7 @@
 package com.gomezvaez.eventsourcing.domain.event;
 
+import com.gomezvaez.eventsourcing.domain.TechnicalId;
+
 public interface CreationEvent extends Event {
-    CreationEvent setId(String internalId);
+    CreationEvent setId(TechnicalId technicalId);
 }

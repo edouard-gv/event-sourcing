@@ -2,6 +2,7 @@ package com.gomezvaez.eventsourcing.eventstore;
 
 import com.gomezvaez.eventsourcing.domain.Alchemist;
 import com.gomezvaez.eventsourcing.domain.AlchemistId;
+import com.gomezvaez.eventsourcing.domain.TechnicalId;
 import com.gomezvaez.eventsourcing.domain.event.*;
 import org.springframework.stereotype.Repository;
 
@@ -30,7 +31,7 @@ public class AlchemistESRepository {
     }
 
     private static Event setId(Event event) {
-        return event instanceof CreationEvent creationEvent ? creationEvent.setId(UUID.randomUUID().toString()) : event;
+        return event instanceof CreationEvent creationEvent ? creationEvent.setId(new TechnicalId(UUID.randomUUID().toString())) : event;
     }
 
     public ArrayList<Alchemist> getAlchemistList() {
