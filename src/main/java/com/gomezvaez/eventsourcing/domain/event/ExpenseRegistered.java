@@ -6,7 +6,7 @@ import com.gomezvaez.eventsourcing.domain.Expense;
 
 import java.util.Date;
 
-public record ExpenseRegistered(EventId eventId, AlchemistId alchemistId, Date date, String description, int debit) implements Event {
+public record ExpenseRegistered(EventId eventId, AlchemistId alchemistId, Date date, String description, int debit) implements CreationEvent {
 
     public ExpenseRegistered(AlchemistId alchemistId, Date date, String description, int debit) {
         this(null, alchemistId, date, description, debit);
@@ -18,7 +18,7 @@ public record ExpenseRegistered(EventId eventId, AlchemistId alchemistId, Date d
         alchemist.setBalance(alchemist.getBalance() - debit);
     }
 
-    public Event solidify(EventId eventId) {
+    public ExpenseRegistered setId(EventId eventId) {
         return new ExpenseRegistered(eventId, alchemistId, date, description, debit);
     }
 }

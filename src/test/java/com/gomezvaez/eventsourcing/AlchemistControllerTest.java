@@ -45,7 +45,8 @@ public class AlchemistControllerTest {
         ResultActions alchemistResult = mockMvc.perform(get("/alchemists/" + alchemistId)).andExpect(status().isOk());
         System.out.println(objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(objectMapper.readValue(alchemistResult
                 .andReturn().getResponse().getContentAsString(), Object.class)));
-        alchemistResult.andExpect(jsonPath("$.balance").value(10));
+        alchemistResult.andExpect(jsonPath("$.balance").value(10))
+                .andExpect(jsonPath("$.activities[0].activityId").isNotEmpty());
 
         // Récupérer tous les Alchimistes
         mockMvc.perform(post("/alchemists").contentType("application/json").content(objectMapper.writeValueAsString(createAlchemistRequest))).andExpect(status().isOk()).andReturn().getResponse().getContentAsString();

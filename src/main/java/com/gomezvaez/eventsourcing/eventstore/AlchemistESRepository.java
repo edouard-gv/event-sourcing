@@ -17,21 +17,17 @@ public class AlchemistESRepository {
         this.eventRepository = eventRepository;
     }
 
-    public void registerExpense(ExpenseRegistered event) {
-        registerEvent(event.solidify(new EventId(UUID.randomUUID().toString())));
-    }
-
-    public void registerActivity(ActivityRegistered event) {
-        registerEvent(event.solidify(new EventId(UUID.randomUUID().toString())));
-    }
-
     public void registerEvent(Event event) {
         EventEntity eventEntity = new EventEntity();
         eventEntity.setDate(new Date());
         eventEntity.setAlchemistId(event.alchemistId());
-        eventEntity.setEvent(event);
+        eventEntity.setEvent(setId(event));
 
         eventRepository.save(eventEntity);
+    }
+
+    private static Event setId(Event event) {
+        return event instanceof CreationEvent creationEvent ? creationEvent.setId(new EventId(UUID.randomUUID().toString())) : event;
     }
 
     public ArrayList<Alchemist> getAlchemistList() {
