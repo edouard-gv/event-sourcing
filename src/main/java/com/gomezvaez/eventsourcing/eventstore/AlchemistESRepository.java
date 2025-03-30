@@ -13,7 +13,7 @@ import java.util.*;
 @Repository
 public class AlchemistESRepository {
 
-    EventRepository eventRepository;
+    private EventRepository eventRepository;
 
     public AlchemistESRepository(EventRepository eventRepository) {
         this.eventRepository = eventRepository;

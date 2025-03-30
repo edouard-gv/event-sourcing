@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gomezvaez.eventsourcing.api.CreateAlchemistRequest;
 import com.gomezvaez.eventsourcing.api.RegisterActivityRequest;
 import com.gomezvaez.eventsourcing.api.RegisterExpenseRequest;
+import com.gomezvaez.eventsourcing.eventstore.EventRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -28,8 +29,11 @@ public class AlchemistControllerTest {
     @Autowired
     private ObjectMapper objectMapper;
 
+    @Autowired
+    private EventRepository eventRepository;
+
     @Test
-    public void testCreateAlchemistAndAddActivityAndSpending() throws Exception {
+    public void testHappyPath() throws Exception {
         // Créer un alchimiste
         CreateAlchemistRequest createAlchemistRequest = new CreateAlchemistRequest("Test Alchemist", "test@example.com");
         String alchemistId = mockMvc.perform(post("/alchemists").contentType("application/json").content(objectMapper.writeValueAsString(createAlchemistRequest))).andExpect(status().isOk()).andReturn().getResponse().getContentAsString();
@@ -42,17 +46,33 @@ public class AlchemistControllerTest {
         RegisterExpenseRequest registerExpenseRequest = new RegisterExpenseRequest(new Date(), "Test Spend Pearls", 20);
         mockMvc.perform(post("/alchemists/" + alchemistId + "/expenses").contentType("application/json").content(objectMapper.writeValueAsString(registerExpenseRequest))).andExpect(status().isOk());
 
-        ResultActions alchemistResult = mockMvc.perform(get("/alchemists/" + alchemistId)).andExpect(status().isOk());
-        System.out.println(objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(objectMapper.readValue(alchemistResult
-                .andReturn().getResponse().getContentAsString(), Object.class)));
-        alchemistResult.andExpect(jsonPath("$.balance").value(10))
+        mockMvc.perform(get("/alchemists/" + alchemistId)).andExpect(status().isOk())
+                .andExpect(jsonPath("$.balance").value(10));
+    }
+
+    @Test
+    public void testCreationsAndListing() throws Exception {
+        eventRepository.deleteAll();
+
+        CreateAlchemistRequest createAlchemistRequest = new CreateAlchemistRequest("Test Alchemist", "test@example.com");
+        String alchemistId = mockMvc.perform(post("/alchemists").contentType("application/json").content(objectMapper.writeValueAsString(createAlchemistRequest))).andExpect(status().isOk()).andReturn().getResponse().getContentAsString();
+
+        RegisterActivityRequest registerActivityRequest = new RegisterActivityRequest(new Date(), "Test Activity", 30);
+        String activityId = mockMvc.perform(post("/alchemists/" + alchemistId + "/activities").contentType("application/json").content(objectMapper.writeValueAsString(registerActivityRequest))).andExpect(status().isOk())
+                .andReturn().getResponse().getContentAsString();
+
+        mockMvc.perform(get("/alchemists/" + alchemistId)).andExpect(status().isOk())
+                .andExpect(jsonPath("$.balance").value(30))
                 .andExpect(jsonPath("$.activities[0].activityId").isNotEmpty());
 
-        // Récupérer tous les Alchimistes
+        // Récupérer tous les Alchimistes en en ajoutant second
         mockMvc.perform(post("/alchemists").contentType("application/json").content(objectMapper.writeValueAsString(createAlchemistRequest))).andExpect(status().isOk()).andReturn().getResponse().getContentAsString();
-        mockMvc.perform(get("/alchemists")).andExpect(status().isOk())
-                .andExpect(jsonPath("$.length()").value(2));
 
+        ResultActions alchemistListResult = mockMvc.perform(get("/alchemists")).andExpect(status().isOk());
+        System.out.println(objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(objectMapper.readValue(alchemistListResult
+                .andReturn().getResponse().getContentAsString(), Object.class)));
+        alchemistListResult
+                .andExpect(jsonPath("$.length()").value(2));
     }
 
     @Test
